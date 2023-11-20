@@ -1,0 +1,86 @@
+<!-- index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <title>Gerenciador de Tarefas</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Gerenciador de Tarefas</h1>
+
+        <form action="/adicionar" method="post" class="mt-4">
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição:</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="status" class="form-label">Status:</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="Completo">Completo</option>
+                    <option value="Incompleto">Incompleto</option>
+                    <option value="Não Feito">Não Feito</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="prazo" class="form-label">Prazo:</label>
+                <input type="date" id="prazo" name="prazo" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Tarefa</button>
+        </form>
+
+        <form action="/filtrar" method="post" class="mb-4">
+            <label for="filtro" class="form-label">Filtrar por status:</label>
+            <select id="filtro" name="filtro" class="form-select">
+                <option value="todos">Todos</option>
+                <option value="completo">Completo</option>
+                <option value="incompleto">Incompleto</option>
+                <option value="nao-feito">Não Feito</option>
+            </select>
+            <button type="submit" class="btn btn-secondary">Filtrar</button>
+        </form>
+
+        <ul class="list-group mt-4">
+            <% tarefas.forEach(tarefa => { %>
+                <li class="list-group-item 
+                    <%= tarefa.status === 'Completo' ? 'status-completo' : '' %>
+                    <%= tarefa.status === 'Incompleto' ? 'status-incompleto' : '' %>
+                    <%= tarefa.status === 'Não Feito' ? 'status-nao-feito' : '' %>
+                ">
+                    <strong><%= tarefa.descricao %></strong>
+                    <p>Status: <%= tarefa.status %></p>
+                    <p>Prazo: <%= tarefa.prazo.toISOString().split('T')[0] %></p>
+                    
+                    
+                    <form action="/deletar/<%= tarefa._id %>" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                    </form>
+                    
+                    
+                    <a href="/editar/<%= tarefa._id %>" class="btn btn-primary btn-sm ms-2">Editar</a>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <script>
+        // Script para manter o filtro selecionado
+        document.addEventListener("DOMContentLoaded", function () {
+            <% if (typeof filtroSelecionado !== 'undefined') { %>
+                const filtroSelecionado = "<%= filtroSelecionado %>";
+                const filtroSelect = document.getElementById("filtro");
+    
+                if (filtroSelecionado) {
+                    filtroSelect.value = filtroSelecionado;
+                }
+            <% } %>
+        });
+    </script>
+</body>
+</html>

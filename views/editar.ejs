@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <title>Editar Tarefa</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Editar Tarefa</h1>
+        <form action="/editar/<%= tarefa._id %>" method="post" class="mt-4">
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Nova Descrição:</label>
+                <input type="text" id="descricao" name="descricao" class="form-control" value="<%= tarefa.descricao %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="status" class="form-label">Novo Status:</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="Completo" <%= tarefa.status === 'Completo' ? 'selected' : '' %>>Completo</option>
+                    <option value="Incompleto" <%= tarefa.status === 'Incompleto' ? 'selected' : '' %>>Incompleto</option>
+                    <option value="Não Feito" <%= tarefa.status === 'Não Feito' ? 'selected' : '' %>>Não Feito</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="prazo" class="form-label">Novo Prazo:</label>
+                <input type="date" id="prazo" name="prazo" class="form-control" value="<%= tarefa.prazo.toISOString().split('T')[0] %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Atualizar Tarefa</button>
+        </form>
+    </div>
+</body>
+</html>

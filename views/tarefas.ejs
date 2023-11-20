@@ -1,0 +1,43 @@
+<!-- views/tarefas.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Inclua os arquivos do Bootstrap e o arquivo de estilo -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <title>Lista de Tarefas</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Lista de Tarefas</h1>
+        
+        <ul class="list-group mt-4">
+            <% tarefas.forEach(tarefa => { %>
+                <li class="list-group-item 
+                    <%= tarefa.status === 'Completo' ? 'status-completo' : '' %>
+                    <%= tarefa.status === 'Incompleto' ? 'status-incompleto' : '' %>
+                    <%= tarefa.status === 'Não Feito' ? 'status-nao-feito' : '' %>
+                ">
+                    <strong><%= tarefa.descricao %></strong>
+                    <p>Status: <%= tarefa.status %></p>
+                    <p>Prazo: <%= tarefa.prazo.toISOString().split('T')[0] %></p>
+                    
+                    <!-- Adicione um botão para deletar a tarefa -->
+                    <form action="/deletar/<%= tarefa._id %>" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                    </form>
+                    
+                    <!-- Adicione um link para editar a tarefa -->
+                    <a href="/editar/<%= tarefa._id %>" class="btn btn-primary btn-sm ms-2">Editar</a>
+                </li>
+            <% }); %>
+        </ul>
+        
+        <a href="/" class="btn btn-secondary mt-3">Voltar para a Página Inicial</a>
+    </div>
+</body>
+</html>
